@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Netflix Clone</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url('Background.jpg') no-repeat center center/cover;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+    }
+
+    .logo {
+      height: 40px;
+    }
+
+    .signin-btn {
+      background-color: #e50914;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      top: 30%;
+      padding: 0 20px;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .hero-content h2 {
+      font-weight: normal;
+      margin-bottom: 20px;
+    }
+
+    .hero-content p {
+      margin-bottom: 20px;
+    }
+
+    .email-form input {
+      padding: 10px;
+      width: 300px;
+      max-width: 80%;
+      font-size: 16px;
+      border: none;
+      outline: none;
+    }
+
+    .email-form button {
+      padding: 10px 20px;
+      background-color: #e50914;
+      color: white;
+      border: none;
+      font-size: 16px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+   /* Trending Now Section */
+.trending-now {
+  padding: 40px 20px;
+  background-color: #111;
+}
+
+.trending-now h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.trending-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+
+.trend {
+  position: relative;
+  flex: 0 0 auto;
+  width: 150px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.trend img {
+  width: 100%;
+  height: 225px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.trend:hover img {
+  transform: scale(1.05);
+}
+
+.trend span {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  background-color: rgba(0,0,0,0.7);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+}
+#videoModal .modal-content {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+
+
+    .features {
+      background-color: black;
+      padding: 50px 20px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 40px 0;
+      border-bottom: 8px solid #222;
+    }
+
+    .feature-text {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .feature-text h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-text h2 {
+      font-weight: normal;
+      font-size: 1.3rem;
+    }
+
+    .feature-img {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .feature-img img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .faq {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .faq h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .faq-item {
+      margin: 10px auto;
+      max-width: 800px;
+      text-align: left;
+    }
+
+    .faq-question {
+      background-color: #303030;
+      padding: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .faq-answer {
+      background-color: #444;
+      padding: 20px;
+      display: none;
+      font-size: 16px;
+    }
+
+    footer {
+      background-color: black;
+      padding: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: gray;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #222;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .modal-content input {
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+    }
+
+    .login-btn {
+      background-color: #e50914;
+      color: white;
+      padding: 12px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .signup-row {
+      text-align: center;
+    }
+
+    .signup-row a {
+      color: white;
+      text-decoration: underline;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      color: white;
+      font-size: 24px;
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      cursor: pointer;
+    }
+
+    #login-error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .feature {
+        flex-direction: column;
+      }
+
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+    }
+    .media.s1 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  margin: 20px auto;
+}
+
+.media.s1 img {
+  width: 100%;
+  height: auto;
+  z-index: 1;
+}
+
+.media.s1 video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 73%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none; /* Ensures clicks go through the video */
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="overlay"></div>
+    <header>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" class="logo" alt="Netflix Logo" />
+      <button class="signin-btn" onclick="openModal()">Sign In</button>
+    </header>
+    <div class="hero-content">
+      <h1>Unlimited movies, TV shows and more</h1>
+      <h2>Watch anywhere. Cancel anytime. Starts at ₹149.</h2>
+      <p>Ready to watch? Enter your email to create or restart your membership.</p>
+      <div class="email-form">
+        <input type="email" placeholder="Email address" id="email-input" />
+        <button id="get-started">Get Started &gt;</button>
+      </div>      
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="texts">
+        <h1>Enjoy on your TV.</h1>
+        <p>Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.</p>
+    </div>
+    <div class="media s1">
+        <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png" alt="">
+        <video autoplay="" playsinline="" muted="" loop="">
+            <source src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/video-tv-0819.m4v"
+                type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="trending-now">
+        <h2>Trending Now</h2>
+        <div class="trending-container">
+          <div class="trend"><span>1</span><img src="Deva.jpg" alt="Deva" /></div>
+          <div class="trend"><span>2</span><img src="Dragon.jpg" alt="Dragon" /></div>
+          <div class="trend"><span>3</span><img src="Puspa2.jpg"Pushpa" /></div>
+          <div class="trend"><span>4</span><img src="Officer.jpg" alt="Officer" /></div>
+          <div class="trend"><span>5</span><img src="Khakee.jpg" alt="Khakee" /></div>
+          <div class="trend"><span>6</span><img src="Squidgame.jpg" alt="Squid Game" /></div>
+          <div class="trend"><span>7</span><img src="Vidrah.jpg" alt="Vidrah" /></div>
+        </div>
+      </div>
+      <!-- Video Modal -->
+<div class="modal" id="videoModal">
+  <div class="modal-content" style="max-width: 800px; width: 90%; padding: 0;">
+    <span class="close-btn" onclick="closeVideoModal()">&times;</span>
+    <video id="moviePlayer" controls style="width: 100%; height: auto;">
+      <source id="videoSource" src="" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+  </div>
+</div>
+      
+
+    <div class="feature">
+      <div class="feature-text">
+        <h1>Download your shows to watch offline</h1>
+        <h2>Save your favourites easily and always have something to watch.</h2>
+      </div>
+      <div class="feature-img">
+        <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg" alt="Mobile Feature" />
+      </div>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h1>Frequently Asked Questions</h1>
+    <div class="faq-item">
+      <div class="faq-question">What is Netflix?</div>
+      <div class="faq-answer">Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">How much does Netflix cost?</div>
+      <div class="faq-answer">Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee. Plans range from ₹149 to ₹649 a month.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Where can I watch?</div>
+      <div class="faq-answer">Watch anywhere, anytime, on an unlimited number of devices. Sign in with your Netflix account to watch instantly on the web or on your devices.</div>
+    </div>
+  </div>
+
+  <footer>
+    Netflix India Clone. Built with HTML, CSS, and JavaScript for demo purposes only.
+  </footer>
+
+  <!-- Sign In Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Sign In</h2>
+      <input type="email" placeholder="Email or mobile number" />
+      <input type="password" placeholder="Password" />
+      <p id="login-error">I can't find your account.</p>
+      <button class="login-btn">Sign In</button>
+      <div class="signup-row">
+        <span>New to Netflix?</span>
+        <a onclick="openSignupModal()">Sign up now.</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeSignupModal()">&times;</span>
+      <h2>Sign Up</h2>
+      <input type="text" placeholder="Full Name" />
+      <input type="email" placeholder="Email address" />
+      <input type="password" placeholder="Password" />
+      <input type="password" placeholder="Confirm Password" />
+      <button class="login-btn">Sign Up</button>
+      <div class="signup-row">
+        <span>Already have an account?</span>
+        <a onclick="switchToLogin()">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = document.querySelectorAll(".faq-question");
+    questions.forEach((question) => {
+      question.addEventListener("click", () => {
+        const answer = question.nextElementSibling;
+        answer.style.display = answer.style.display === "block" ? "none" : "block";
+      });
+    });
+    document.getElementById("get-started").addEventListener("click", function () {
+  const email = document.getElementById("email-input").value;
+
+  if (email.trim() === "") {
+    alert("Please enter a valid email address.");
+    return;
+  }
+
+  // Save email to localStorage or just redirect 
+  localStorage.setItem("userEmail", email);
+
+  // Redirect to next page 
+  window.location.href = "https://www.netflix.com/signup/paymentPicker";
+});
+
+
+    function openModal() {
+      document.getElementById("loginModal").style.display = "flex";
+      document.getElementById("login-error").style.display = "none"; // reset error
+    }
+
+    function closeModal() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+
+    function openSignupModal() {
+      document.getElementById("signupModal").style.display = "flex";
+      closeModal();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function closeSignupModal() {
+      document.getElementById("signupModal").style.display = "none";
+    }
+
+    function switchToLogin() {
+      closeSignupModal();
+      openModal();
+    }
+
+    window.onclick = function(event) {
+      if (event.target === document.getElementById("loginModal")) closeModal();
+      if (event.target === document.getElementById("signupModal")) closeSignupModal();
+    };
+
+    // Dummy Login validation
+    document.querySelector('#loginModal .login-btn').addEventListener('click', function () {
+      const email = document.querySelector('#loginModal input[type="email"]').value;
+      const password = document.querySelector('#loginModal input[type="password"]').value;
+
+      // Replace this condition with actual validation
+      if (email !== "test@example.com" || password !== "123456") {
+        document.getElementById("login-error").style.display = "block";
+      } else {
+        alert("Logged in successfully!");
+        closeModal();
+      }
+    });
+    // Sample video URLs (replace these with actual trailers or local files)
+const videoMap = {
+  "Deva": "Deva.mp4",
+  "Dragon": "Dragon.mp4",
+  "Puspa2": "Puspa2.mp4",
+  "Officer": "Officer.mp4",
+  "Khakee": "Khakee.mp4",
+  "Squidgame": "Squidgame.mp4",
+  "Vidrah": "Vidrah.mp4"
+};
+
+// Add click event listeners to each trending movie card
+document.querySelectorAll('.trending-container .trend').forEach(trend => {
+  trend.addEventListener('click', () => {
+    const altText = trend.querySelector('img').alt;
+    const videoPath = videoMap[altText];
+    if (videoPath) {
+      document.getElementById('videoSource').src = videoPath;
+      const player = document.getElementById('moviePlayer');
+      player.load();
+      player.play();
+      document.getElementById('videoModal').style.display = 'flex';
+    } else {
+      alert("Trailer not available for this movie.");
+    }
+  });
+});
+
+// Close video modal
+function closeVideoModal() {
+  const player = document.getElementById('moviePlayer');
+  player.pause();
+  player.currentTime = 0;
+  document.getElementById('videoModal').style.display = 'none';
+}
+
+// Close modal on outside click
+window.addEventListener('click', function (event) {
+  const videoModal = document.getElementById('videoModal');
+  if (event.target === videoModal) closeVideoModal();
+});
+  </script>
+</body>
+</html>
